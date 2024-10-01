@@ -19,6 +19,7 @@ public class Bullet : IBullet
 
     public void Fire()
     {
-        Debug.Log("Cast [" + string.Join(", ", elementalBulletTypes) + "] bullet dealing [" + damage + "] damage");
+        Debug.Log("Shoot [" + string.Join(", ", elementalBulletTypes) + "] bullet dealing [" + damage + "] damage");
     }
+
 }
