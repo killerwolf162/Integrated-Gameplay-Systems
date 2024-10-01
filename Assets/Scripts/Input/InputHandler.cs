@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum KeypressType
+{
+    Hold,
+    Down,
+    Up
+}
+
 public class InputHandler
 {
     private List<KeyCommand> commands = new List<KeyCommand>();
@@ -9,18 +16,41 @@ public class InputHandler
     {
         foreach (var binding in commands)
         {
-            if (Input.GetKey(binding.key))
+            switch (binding.inputType)
             {
-                binding.command.Execute();
+                case KeypressType.Hold:
+                    if (Input.GetKey(binding.key))
+                    {
+                        binding.command.Execute();
+                    }
+                    break;
+
+                case KeypressType.Down:
+                    if (Input.GetKeyDown(binding.key))
+                    {
+                        binding.command.Execute();
+                    }
+                    break;
+
+                case KeypressType.Up:
+                    if (Input.GetKeyUp(binding.key))
+                    {
+                        binding.command.Execute();
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
     }
-    public void BindKeyToCommand(KeyCode key, ICommand command)
+    public void BindKeyToCommand(KeyCode key, ICommand command, KeypressType inputType)
     {
         commands.Add(new KeyCommand
         {
             key = key,
-            command = command
+            command = command,
+            inputType = inputType
         });
     }
 
@@ -35,4 +65,5 @@ public class KeyCommand
 {
     public KeyCode key;
     public ICommand command;
+    public KeypressType inputType;
 }
