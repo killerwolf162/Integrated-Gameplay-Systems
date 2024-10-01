@@ -2,35 +2,36 @@ using UnityEngine;
 
 public abstract class AbilityBase
 {
-    //make this a reference to a singleton audioplayer class
-    protected abstract void PlaySound();
+    protected float cooldownTime = 0;
 }
 
 
 public class DashAbility : AbilityBase, ICommand
 {
-    public void Execute()
+    public AbilityActor actor { get; private set; }
+
+    public DashAbility(AbilityActor actor)
     {
-        Debug.Log($"Player is dashing");
-        PlaySound();
+        this.actor = actor;
     }
 
-    protected override void PlaySound()
+    public void Execute()
     {
-        Debug.Log("Played dashing sound");
+        Debug.Log($"{actor.GameObject().name} is dashing");
     }
 }
 
 public class FireballAbility : AbilityBase, ICommand
 {
-    public void Execute()
+    public AbilityActor actor { get; private set; }
+
+    public FireballAbility(AbilityActor actor)
     {
-        Debug.Log($"Player casted a fireball");
-        PlaySound();
+        this.actor = actor;
     }
 
-    protected override void PlaySound()
+    public void Execute()
     {
-        Debug.Log("Played fireball sound");
+        Debug.Log($"{actor.GameObject().name} casted a fireball");
     }
 }

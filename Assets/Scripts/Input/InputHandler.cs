@@ -44,7 +44,7 @@ public class InputHandler
             }
         }
     }
-    public void BindKeyToCommand(KeyCode key, ICommand command, KeypressType inputType)
+    public void BindKeyToCommand(KeyCode key, KeypressType inputType, ICommand command)
     {
         commands.Add(new KeyCommand
         {
