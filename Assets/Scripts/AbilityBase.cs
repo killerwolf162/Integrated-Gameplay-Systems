@@ -18,6 +18,8 @@ public class DashAbility : AbilityBase, ICommand
     public void Execute()
     {
         Debug.Log($"{actor.GameObject().name} is dashing");
+        Transform actorTransform = actor.GameObject().transform;
+        actorTransform.position += new Vector3(1f, 0f);
     }
 }
 
