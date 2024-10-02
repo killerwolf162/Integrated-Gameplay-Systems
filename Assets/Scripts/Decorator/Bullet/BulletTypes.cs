@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public enum ElementalBulletTypes
 {
     Normal = 1,
