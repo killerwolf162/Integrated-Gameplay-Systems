@@ -1,7 +1,5 @@
-using UnityEngine;
-
 public interface ICommand
 {
-    public AbilityActor actor { get; }
+    public IAbilityActor actor { get; }
     public void Execute();
 }

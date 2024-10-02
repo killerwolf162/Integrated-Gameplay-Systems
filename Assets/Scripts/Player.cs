@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour, AbilityActor
+public class Player : Unit
 {
     private InputHandler inputHandler = new InputHandler();
 
@@ -12,15 +12,5 @@ public class Player : MonoBehaviour, AbilityActor
     public void Update()
     {
         inputHandler.HandleInput();
-    }
-
-    public GameObject GameObject()
-    {
-        return gameObject;
-    }
-
-    public Vector2 GetAimDirection()
-    {
-        return new Vector2(1f, 0f);
     }
 }
