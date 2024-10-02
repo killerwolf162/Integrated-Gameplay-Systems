@@ -16,7 +16,6 @@ public class ObjectPool<T> where T : IPoolable
     {
         T instance = (T)Activator.CreateInstance(typeof(T));
         _inactivePool.Add(instance);
-        Debug.Log("Added new item to pool; total size: " + (_activePool.Count + _inactivePool.Count));
         return instance;
     }
 
@@ -26,7 +25,6 @@ public class ObjectPool<T> where T : IPoolable
         {
             return _inactivePool[0];
         }
-        Debug.Log("pool is empty");
         return default(T);
     }
 
