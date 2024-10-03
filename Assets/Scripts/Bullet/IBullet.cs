@@ -2,12 +2,12 @@
 
 public interface IBullet : IPoolable
 {
-    int damage { get; set; }
+    public int damage { get; set; }
 
-    HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; }
+    public HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; }
 
-    void Decorate(BulletDecorator decorator);
+    public void Decorate(BulletDecorator decorator);
 
-    void ShootBullet();
+    public void ShootBullet();
 }
 

@@ -3,13 +3,13 @@
 public class FireDecorateBulletCommand : ICommand
 {
 
-    private ObjectPool<IBullet> bulletPool;
+    private ObjectPool<IBullet> _bulletPool;
 
-    private int fireDamage = 5;
+    private int _fireDamage = 5;
 
     public FireDecorateBulletCommand(ObjectPool<IBullet> bulletPool)
     {
-        this.bulletPool = bulletPool;
+        this._bulletPool = bulletPool;
     }
 
     public IAbilityActor actor { get; private set; }
@@ -21,6 +21,6 @@ public class FireDecorateBulletCommand : ICommand
 
     private void DecorateBullet()
     {
-        bulletPool.RequestObject()?.Decorate(new ElementDecorator(ElementalBulletTypes.Fire, fireDamage)); // replace fireDamage with actor.fireDamage(stored in player(?)) so its easier to change values later.
+        _bulletPool.RequestObject()?.Decorate(new ElementDecorator(ElementalBulletTypes.Fire, _fireDamage)); // replace fireDamage with actor.fireDamage(stored in player(?)) so its easier to change values later.
     }
 }
