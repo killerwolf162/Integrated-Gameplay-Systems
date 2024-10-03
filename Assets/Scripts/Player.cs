@@ -5,19 +5,15 @@ public class Player : IAbilityActor, ISceneObject
 {
     private InputHandler inputHandler = new InputHandler();
 
-<<<<<<< HEAD
     private ObjectPool<IBullet> bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
         new Bullet(0),
         new Bullet(5),
         new Bullet(10)
     });
 
-    private void Start()
-=======
     public GameObject gameobject { get; private set; }
 
     public Player(GameObject gameobject)
->>>>>>> develop
     {
         this.gameobject = gameobject;
         Start();
