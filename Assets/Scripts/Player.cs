@@ -4,12 +4,12 @@ public class Player : Unit
 {
     private InputHandler inputHandler = new InputHandler();
 
-    private void Start()
+    public override void Start()
     {
         inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
     }
 
-    public void Update()
+    public override void Update()
     {
         inputHandler.HandleInput();
     }

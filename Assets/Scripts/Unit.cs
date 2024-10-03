@@ -1,10 +1,24 @@
+using System;
 using UnityEngine;
 
-public class Unit : MonoBehaviour, IAbilityActor
+[Serializable]
+public class Unit : IAbilityActor
 {
+    public virtual void Start()
+    {
+    }
+
+    public virtual void Update()
+    {
+    }
+
+    public virtual void FixedUpdate()
+    {
+    }
+
     public virtual GameObject GameObject()
     {
-        return gameObject;
+        return null;
     }
 
     public virtual Vector2 GetAimDirection()
