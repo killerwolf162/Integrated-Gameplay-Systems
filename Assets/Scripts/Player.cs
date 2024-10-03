@@ -1,31 +1,40 @@
 using UnityEngine;
 
-public class Player : IAbilityActor
+public class Player : IAbilityActor, ISceneObject
 {
     private InputHandler inputHandler = new InputHandler();
 
-    public void Start()
+    public GameObject gameobject { get; private set; }
+
+    public Player(GameObject gameobject)
     {
+        this.gameobject = gameobject;
+        Start();
+    }
+
+    public virtual void Start()
+    {
+        GameHandler.instance.Subscribe(this);
         inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
     }
 
-    public void Update()
+    public virtual void Update()
     {
         inputHandler.HandleInput();
     }
 
     public GameObject GameObject()
     {
-        throw new System.NotImplementedException();
+        return gameobject;
     }
 
     public Vector2 GetAimDirection()
     {
-        throw new System.NotImplementedException();
+        return new Vector2(0f, 0f);
     }
 
     public Vector2 MoveDirection()
     {
-        throw new System.NotImplementedException();
+        return new Vector2(0f, 0f);
     }
 }

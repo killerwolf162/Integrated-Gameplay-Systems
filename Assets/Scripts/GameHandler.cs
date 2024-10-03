@@ -1,16 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonoBehaviourHandler : MonoBehaviour
+public class GameHandler : MonoBehaviour
 {
-    [SerializeField]
-    private List<IUpdateable> updateables = new List<IUpdateable>();
+    public static GameHandler instance;
 
-    GameController gameController;
+    [SerializeField]
+    private GameObject playerPrefab;
+
+    private List<ISceneObject> updateables = new List<ISceneObject>();
+
+    private ISceneObject player;
 
     private void Start()
     {
-        gameController = new GameController(this);
+        instance = this;
+        player = new Player(Instantiate(playerPrefab));
     }
 
     private void Update()
@@ -21,7 +26,7 @@ public class MonoBehaviourHandler : MonoBehaviour
         }
     }
 
-    public void Subscribe(IUpdateable updateable)
+    public void Subscribe(ISceneObject updateable)
     {
         if (!updateables.Contains(updateable))
         {
@@ -29,19 +34,11 @@ public class MonoBehaviourHandler : MonoBehaviour
         }
     }
 
-    public void UnSubscribe(IUpdateable updateable)
+    public void UnSubscribe(ISceneObject updateable)
     {
         if (updateables.Contains(updateable))
         {
             updateables.Remove(updateable);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (gameController != null)
-        {
-            gameController.Cleanup();
         }
     }
 }
