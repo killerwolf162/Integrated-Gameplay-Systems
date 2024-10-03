@@ -5,6 +5,8 @@ public class Bullet : IBullet
 {
     public int damage { get; set; }
     public HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; } = new HashSet<ElementalBulletTypes>() { ElementalBulletTypes.Normal };
+    public bool active { get; set; }
+    public GameObject bulletPrefab;
 
     public Bullet(int damage)
     {
@@ -16,9 +18,18 @@ public class Bullet : IBullet
         decorator.Decorate(this);   
     }
 
-    public void Fire()
+    public void ShootBullet()
     {
-        Debug.Log("Shoot [" + string.Join(", ", elementalBulletTypes) + "] bullet dealing [" + damage + "] damage");
+        // Shoot Bullet
     }
 
+    public void OnEnableObject()
+    {
+        // render bullet in game
+    }
+
+    public void OnDisableObject()
+    {
+        // stop rendering bullet in game
+    }
 }
