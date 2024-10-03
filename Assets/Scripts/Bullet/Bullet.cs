@@ -20,16 +20,16 @@ public class Bullet : IBullet
 
     public void ShootBullet()
     {
-        Debug.Log("Shoot [" + string.Join(", ", elementalBulletTypes) + "] bullet dealing [" + damage + "] damage");
+        // Shoot Bullet
     }
 
     public void OnEnableObject()
     {
-        Debug.Log("Render bullet in game");
+        // render bullet in game
     }
 
     public void OnDisableObject()
     {
-        Debug.Log("stop rendering bullet in game");
+        // stop rendering bullet in game
     }
 }
