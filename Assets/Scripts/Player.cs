@@ -6,13 +6,20 @@ public class Player : IAbilityActor, ISceneObject
     private InputHandler _inputHandler = new InputHandler();
 
     private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-        new Bullet(0, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
         new Bullet(5, Color.black),
     });
 
     public GameObject gameobject { get; private set; }
-
-    //private int ammoCapacity = 30;
 
     public Player(GameObject gameobject)
     {
@@ -28,6 +35,9 @@ public class Player : IAbilityActor, ISceneObject
         _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
         _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
         _inputHandler.BindKeyToCommand(KeyCode.E, KeypressType.Down, new ShootBulletCommand(_bulletPool));
+
+        // new command, if reload -> return all active items inactive pool
+
     }
 
     public virtual void Update()
