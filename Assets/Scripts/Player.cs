@@ -14,7 +14,8 @@ public class Player : Unit
     private void Start()
     {
         inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
-        inputHandler.BindKeyToCommand(KeyCode.Q, KeypressType.Down, new FireDecorateBulletCommand(bulletPool));
+        inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new FireDecorateBulletCommand(bulletPool));
+        inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new IceDecorateBulletCommand(bulletPool));
         inputHandler.BindKeyToCommand(KeyCode.E, KeypressType.Down, new ShootBulletCommand(bulletPool));
     }
 

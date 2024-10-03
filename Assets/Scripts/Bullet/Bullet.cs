@@ -6,6 +6,7 @@ public class Bullet : IBullet
     public int damage { get; set; }
     public HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; } = new HashSet<ElementalBulletTypes>() { ElementalBulletTypes.Normal };
     public bool active { get; set; }
+    public GameObject bulletPrefab;
 
     public Bullet(int damage)
     {
