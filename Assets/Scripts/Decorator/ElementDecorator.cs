@@ -17,7 +17,7 @@ public class ElementDecorator : BulletDecorator
     {
         if(bullet.elementalBulletTypes.Contains(bulletType)) // checks if bullet has already been decorated
         {
-            Debug.Log("Bullet already has this effect");
+            Debug.Log("Bullet already has this effect"); // maybe instead of just ignoring it, make it so that it removes the decoration
             return bullet;
         }
         else

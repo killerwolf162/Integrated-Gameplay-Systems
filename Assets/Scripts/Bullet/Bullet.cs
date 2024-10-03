@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : IBullet, ISceneObject
+public class Bullet : IBullet
 {
     public int damage { get; set; }
     public HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; } = new HashSet<ElementalBulletTypes>() { ElementalBulletTypes.Normal };
@@ -12,15 +12,13 @@ public class Bullet : IBullet, ISceneObject
 
     public GameObject bullet;
 
-    private Rigidbody2D rig;
-    private SpriteRenderer rend;
+    private Rigidbody2D _rig;
+    private SpriteRenderer _rend;
 
     public Bullet(int damage, Color color)
     {
         this.damage = damage;
-        this.color = color;
-        Start();
-        
+        this.color = color;       
     }
 
     public void Decorate(BulletDecorator decorator)
@@ -31,31 +29,21 @@ public class Bullet : IBullet, ISceneObject
     public void ShootBullet()
     {
         Debug.Log("I shoot");
+        bullet = GameHandler.instance.CreateBullet();
+        _rig = bullet.GetComponent<Rigidbody2D>(); // this is bad, getcomponent everytime you shoot a bullet, need to rework if time
+        _rend = bullet.GetComponent<SpriteRenderer>();
+        _rend.color = this.color;
+        _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
     }
 
     public void OnEnableObject()
     {
-        Debug.Log("I got enabeld");
-        bullet = GameHandler.instance.CreateBullet();
-        rig = bullet.GetComponent<Rigidbody2D>();
-        rend = bullet.GetComponent<SpriteRenderer>();
-        rend.color = this.color;
-        rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
+        ShootBullet();
+        
     }
 
     public void OnDisableObject()
     {
         bullet.SetActive(false);
-    }
-
-    public void Start()
-    {
-        GameHandler.instance.Subscribe(this);
-        
-    }
-
-    public void Update()
-    {
-
     }
 }
