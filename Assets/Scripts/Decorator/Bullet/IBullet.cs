@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public interface IBullet
+public interface IBullet : IPoolable
 {
     int damage { get; set; }
 
@@ -8,6 +8,6 @@ public interface IBullet
 
     void Decorate(BulletDecorator decorator);
 
-    void Fire();
+    void ShootBullet();
 }
 
