@@ -5,12 +5,16 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-    [SerializeField]
-    private GameObject playerPrefab;
+
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject bulletPrefab;
 
     private List<ISceneObject> updateables = new List<ISceneObject>();
 
     private ISceneObject player;
+    private GameObject bullet;
+
+    
 
     private void Start()
     {
@@ -40,5 +44,11 @@ public class GameHandler : MonoBehaviour
         {
             updateables.Remove(updateable);
         }
+    }
+
+    public GameObject CreateBullet()
+    {
+        bullet = Instantiate(bulletPrefab);
+        return bullet;
     }
 }
