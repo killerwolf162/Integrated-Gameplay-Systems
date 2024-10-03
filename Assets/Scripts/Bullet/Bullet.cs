@@ -5,15 +5,20 @@ public class Bullet : IBullet, ISceneObject
 {
     public int damage { get; set; }
     public HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; } = new HashSet<ElementalBulletTypes>() { ElementalBulletTypes.Normal };
+    public Color color { get; set; }
     public bool active { get; set; }
 
     public GameObject gameobject => bullet;
 
     public GameObject bullet;
 
-    public Bullet(int damage)
+    private Rigidbody2D rig;
+    private SpriteRenderer rend;
+
+    public Bullet(int damage, Color color)
     {
         this.damage = damage;
+        this.color = color;
         Start();
         
     }
@@ -32,7 +37,9 @@ public class Bullet : IBullet, ISceneObject
     {
         Debug.Log("I got enabeld");
         bullet = GameHandler.instance.CreateBullet();
-        var rig = bullet.GetComponent<Rigidbody2D>();
+        rig = bullet.GetComponent<Rigidbody2D>();
+        rend = bullet.GetComponent<SpriteRenderer>();
+        rend.color = this.color;
         rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
     }
 
@@ -44,6 +51,7 @@ public class Bullet : IBullet, ISceneObject
     public void Start()
     {
         GameHandler.instance.Subscribe(this);
+        
     }
 
     public void Update()

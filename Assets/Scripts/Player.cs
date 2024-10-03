@@ -6,8 +6,8 @@ public class Player : IAbilityActor, ISceneObject
     private InputHandler _inputHandler = new InputHandler();
 
     private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-        new Bullet(0),
-        new Bullet(5),
+        new Bullet(0, Color.black),
+        new Bullet(5, Color.black),
     });
 
     public GameObject gameobject { get; private set; }

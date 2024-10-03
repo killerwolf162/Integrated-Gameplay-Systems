@@ -3,11 +3,14 @@
 public class ElementDecorator : BulletDecorator
 {
     private ElementalBulletTypes bulletType;
+    private Color color;
 
-    public ElementDecorator(ElementalBulletTypes bulletType, int damage)
+    public ElementDecorator(ElementalBulletTypes bulletType, int damage, Color color)
     {
         this.bulletType = bulletType;
         this.damage = damage;
+        this.color = color;
+ 
     }
 
     public override IBullet Decorate(IBullet bullet)
@@ -21,6 +24,7 @@ public class ElementDecorator : BulletDecorator
         {
             bullet.elementalBulletTypes.Add(bulletType); //if bullet hasnt been decorated by this decorater, decorate
             bullet.damage += damage;
+            bullet.color = color;
             Debug.Log("Decorate bullet with [" + string.Join(", ", bulletType) + "]");
             return bullet;
         }      
