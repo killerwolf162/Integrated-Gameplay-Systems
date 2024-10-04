@@ -1,3 +1,4 @@
+using PlayerNS;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class GameHandler : MonoBehaviour
     private void Start()
     {
         instance = this;
-        _player = new Player(Instantiate(_playerPrefab));
+        _player = new PlayerController(Instantiate(_playerPrefab));
     }
 
     private void Update()
