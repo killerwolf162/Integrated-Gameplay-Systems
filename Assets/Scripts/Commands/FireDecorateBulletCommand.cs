@@ -4,7 +4,6 @@ public class FireDecorateBulletCommand : ICommand
 {
 
     private ObjectPool<IBullet> _bulletPool;
-
     private int _fireDamage = 5;
 
     public FireDecorateBulletCommand(ObjectPool<IBullet> bulletPool)
