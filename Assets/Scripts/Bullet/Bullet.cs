@@ -11,8 +11,8 @@ public class Bullet : IBullet, ISceneObject
     public GameObject gameobject => bullet;
     public GameObject bullet;
 
-    public float _timer = 0f;
-    public float _timeOutTime = 2f;
+    public float timer = 0f;
+    public float timeOutTime = 2f;
 
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
@@ -39,23 +39,27 @@ public class Bullet : IBullet, ISceneObject
     {
         GameHandler.instance.DestroyObject(bullet);
         GameHandler.instance.UnSubscribe(this);
-        _timer = 0;
+        timer = 0;
     }
     public void Start()
     {
         GameHandler.instance.Subscribe(this);
         bullet = GameHandler.instance.CreateBullet();
-        _rig = bullet.GetComponent<Rigidbody2D>(); // this is bad, getcomponent everytime you shoot a bullet, need to rework if time
-        _rend = bullet.GetComponent<SpriteRenderer>();
+
+        if(_rig == null)
+            _rig = bullet.GetComponent<Rigidbody2D>();
+        if(_rend == null)
+            _rend = bullet.GetComponent<SpriteRenderer>();
+
         _rend.color = this.color;
         _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
         Update();
     }
     public void Update()
     {
-        _timer += Time.deltaTime;
+        timer += Time.deltaTime;
 
-        if (_timer > _timeOutTime)
+        if (timer > timeOutTime)
         {
             bullet.SetActive(false);
         }
