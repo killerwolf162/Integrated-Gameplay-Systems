@@ -6,9 +6,17 @@ public class Player : IAbilityActor, ISceneObject
     private InputHandler _inputHandler = new InputHandler();
 
     private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-        new Bullet(0),
-        new Bullet(5),
-        new Bullet(10)
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
     });
 
     public GameObject gameobject { get; private set; }
@@ -22,10 +30,14 @@ public class Player : IAbilityActor, ISceneObject
     public virtual void Start()
     {
         GameHandler.instance.Subscribe(this);
+
         _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
         _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
         _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
         _inputHandler.BindKeyToCommand(KeyCode.E, KeypressType.Down, new ShootBulletCommand(_bulletPool));
+
+        // new command, if reload -> return all active items inactive pool
+
     }
 
     public virtual void Update()

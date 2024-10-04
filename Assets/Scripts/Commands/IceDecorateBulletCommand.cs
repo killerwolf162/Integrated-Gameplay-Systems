@@ -1,4 +1,6 @@
-﻿public class IceDecorateBulletCommand : ICommand
+﻿using UnityEngine;
+
+public class IceDecorateBulletCommand : ICommand
 {
 
     private ObjectPool<IBullet> _bulletPool;
@@ -19,6 +21,6 @@
 
     private void DecorateBullet()
     {
-        _bulletPool.RequestObject()?.Decorate(new ElementDecorator(ElementalBulletTypes.Ice, _iceDamage)); // replace iceDamage with actor.iceDamage(stored in player(?)) so its easier to change values later.
+        _bulletPool.RequestObject()?.Decorate(new ElementDecorator(ElementalBulletTypes.Ice, _iceDamage, Color.blue)); // replace iceDamage with actor.iceDamage(stored in player(?)) so its easier to change values later.
     }
 }
