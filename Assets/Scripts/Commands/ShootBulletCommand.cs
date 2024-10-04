@@ -12,11 +12,11 @@
 
     public void Execute()
     {
-        ShootBullet();   
+       ShootBullet();   
     }
 
     private void ShootBullet()
     {
-        _bulletPool.ActivateItem(_bulletPool.RequestObject())?.ShootBullet();  
+        _bulletPool.ActivateItem(_bulletPool.RequestObject())?.OnEnableObject();  
     }
 }

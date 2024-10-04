@@ -3,15 +3,31 @@ using UnityEngine;
 
 public class Player : IAbilityActor, ISceneObject
 {
-    private InputHandler _inputHandler = new InputHandler();
-
-    private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-        new Bullet(0),
-        new Bullet(5),
-        new Bullet(10)
+    public ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
+        new Bullet(5, Color.black),
     });
-
     public GameObject gameobject { get; private set; }
+
+    private InputHandler _inputHandler = new InputHandler();
 
     public Player(GameObject gameobject)
     {
@@ -22,10 +38,14 @@ public class Player : IAbilityActor, ISceneObject
     public virtual void Start()
     {
         GameHandler.instance.Subscribe(this);
+
         _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
-        _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
-        _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
+        _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
+        _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
+        _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool));
         _inputHandler.BindKeyToCommand(KeyCode.E, KeypressType.Down, new ShootBulletCommand(_bulletPool));
+        _inputHandler.BindKeyToCommand(KeyCode.R, KeypressType.Down, new ReturnBulletToPoolCommand(_bulletPool));
+
     }
 
     public virtual void Update()

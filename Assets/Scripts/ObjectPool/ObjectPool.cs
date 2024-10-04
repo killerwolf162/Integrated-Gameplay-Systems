@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ObjectPool<T> where T : IPoolable
 {
-    private List<T> _activePool = new List<T>();
-    private List<T> _inactivePool = new List<T>();
+    public List<T> _activePool = new List<T>();
+    public List<T> _inactivePool = new List<T>();
 
     public ObjectPool(List<T> initPool)
     {
@@ -30,7 +30,6 @@ public class ObjectPool<T> where T : IPoolable
 
     public T ActivateItem(T item)
     {
-        item.OnEnableObject();
         item.active = true;
         if (_inactivePool.Contains(item))
         {
