@@ -12,10 +12,11 @@ namespace PlayerNS
         public PlayerIdle idleState { get; private set; } = new PlayerIdle();
         public PlayerMove moveState { get; private set; } = new PlayerMove();
 
-
+        [Header("General")]
         public Rigidbody2D rb;
+        public GameObject gameobject { get; private set; }
 
-
+        //can probably be done better by instantiating them with a for loop
         private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
         new Bullet(5, Color.black),
         new Bullet(5, Color.black),
@@ -40,7 +41,6 @@ namespace PlayerNS
     });
 
         private InputHandler _inputHandler = new InputHandler();
-        public GameObject gameobject { get; private set; }
 
         public PlayerController(GameObject gameobject)
         {
