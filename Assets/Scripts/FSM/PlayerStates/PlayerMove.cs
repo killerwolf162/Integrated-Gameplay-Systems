@@ -20,7 +20,7 @@ namespace PlayerNS
 
             if (runner.MoveDirection().magnitude < 0.1)
             {
-                onSwitch(runner._idleState);
+                onSwitch(runner.idleState);
             }
         }
 

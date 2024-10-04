@@ -9,8 +9,8 @@ namespace PlayerNS
         [Header("StateMachine")]
         public StateMachine<PlayerController> stateMachine;
         public ScratchPad sharedData => new ScratchPad();
-        public PlayerIdle _idleState { get; private set; } = new PlayerIdle();
-        public PlayerMove _moveState { get; private set; } = new PlayerMove();
+        public PlayerIdle idleState { get; private set; } = new PlayerIdle();
+        public PlayerMove moveState { get; private set; } = new PlayerMove();
 
 
         public Rigidbody2D rb;
@@ -56,7 +56,7 @@ namespace PlayerNS
 
             //initialize statemachine and entry state
             stateMachine = new StateMachine<PlayerController>(this);
-            stateMachine.SetState(_idleState);
+            stateMachine.SetState(idleState);
 
             //initialize input bindings
             _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));

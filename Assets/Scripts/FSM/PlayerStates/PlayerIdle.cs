@@ -15,7 +15,7 @@ namespace PlayerNS
             base.Update(runner);
             if(runner.MoveDirection().magnitude > 0.1)
             {
-                onSwitch(runner._moveState);
+                onSwitch(runner.moveState);
             }
         }
 
