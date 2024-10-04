@@ -7,14 +7,13 @@ namespace PlayerNS
     {
         public override void Start(PlayerController runner)
         {
-            Debug.Log("Enter Idle State");
             base.Start(runner);
         }
 
         public override void Update(PlayerController runner)
         {
             base.Update(runner);
-            if(runner.MoveDirection().magnitude != null)
+            if(runner.MoveDirection().magnitude > 0.1)
             {
                 onSwitch(runner._moveState);
             }

@@ -9,22 +9,16 @@ namespace PlayerNS
 
         public override void Start(PlayerController runner)
         {
-            Debug.Log("Enter Move State");
             base.Start(runner);
         }
 
         public override void Update(PlayerController runner)
         {
-            //Vector3 moveInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            Vector3 dir = new Vector3(runner.MoveDirection().x, runner.MoveDirection().y ,0);
 
-            //runner.rb.MovePosition(runner.transform.position + moveInput * Time.deltaTime * _moveSpeed);
+            runner.rb.MovePosition(runner.gameobject.transform.position + dir * Time.deltaTime * _moveSpeed);
 
-            //if (moveInput != Vector3.zero)
-            //{
-            //    runner.rb.MovePosition(runner.transform.position + moveInput * Time.deltaTime * _moveSpeed);
-            //}
-
-            if (runner.MoveDirection().magnitude == null)
+            if (runner.MoveDirection().magnitude < 0.1)
             {
                 onSwitch(runner._idleState);
             }
@@ -32,7 +26,6 @@ namespace PlayerNS
 
         public override void Complete(PlayerController runner)
         {
-            Debug.Log("Switching to idleState");
             base.Complete(runner);
         }
     }

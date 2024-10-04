@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace PlayerNS
 {
-
     public class PlayerController : IStateRunner, ISceneObject, IAbilityActor
     {
         [Header("StateMachine")]
@@ -13,6 +12,8 @@ namespace PlayerNS
         public PlayerIdle _idleState { get; private set; } = new PlayerIdle();
         public PlayerMove _moveState { get; private set; } = new PlayerMove();
 
+
+        public Rigidbody2D rb;
 
         private InputHandler _inputHandler = new InputHandler();
 
@@ -25,6 +26,7 @@ namespace PlayerNS
         public PlayerController(GameObject gameobject)
         {
             this.gameobject = gameobject;
+            rb = gameobject.GetComponent<Rigidbody2D>();
             Start();
         }
 
@@ -65,7 +67,8 @@ namespace PlayerNS
 
         public Vector2 MoveDirection()
         {
-            return new Vector2(0f, 0f);
+            Vector2 moveDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            return moveDir;
         }
     }
 }
