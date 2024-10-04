@@ -23,7 +23,7 @@ public class ReturnBulletToPoolCommand : ICommand
 
         foreach (Bullet bullet in _bulletPool._activePool)
         {
-            if(bullet._timer > bullet._timeOutTime)
+            if(bullet.timer > bullet.timeOutTime)
             {
                 bulletList.Add(bullet);
             }

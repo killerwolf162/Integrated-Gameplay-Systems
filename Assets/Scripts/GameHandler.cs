@@ -6,23 +6,24 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-    [SerializeField]
-    private GameObject playerPrefab;
 
-    private List<ISceneObject> updateables = new List<ISceneObject>();
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _bulletPrefab;
 
-    private ISceneObject player;
+    public ISceneObject _player;
+
+    private List<ISceneObject> _updateables = new List<ISceneObject>();
+    private GameObject _bullet;
 
     private void Start()
     {
         instance = this;
-        //player = new Player(Instantiate(playerPrefab));
-        player = new PlayerController(Instantiate(playerPrefab)); //for testing purpose
+        _player = new PlayerController(Instantiate(_playerPrefab));
     }
 
     private void Update()
     {
-        foreach (var updateable in updateables)
+        foreach (var updateable in _updateables)
         {
             updateable.Update();
         }
@@ -30,17 +31,28 @@ public class GameHandler : MonoBehaviour
 
     public void Subscribe(ISceneObject updateable)
     {
-        if (!updateables.Contains(updateable))
+        if (!_updateables.Contains(updateable))
         {
-            updateables.Add(updateable);
+            _updateables.Add(updateable);
         }
     }
 
     public void UnSubscribe(ISceneObject updateable)
     {
-        if (updateables.Contains(updateable))
+        if (_updateables.Contains(updateable))
         {
-            updateables.Remove(updateable);
+            _updateables.Remove(updateable);
         }
+    }
+
+    public GameObject CreateBullet()
+    {
+        _bullet = Instantiate(_bulletPrefab);
+        return _bullet;
+    }
+
+    public void DestroyObject(GameObject objectToDestroy)
+    {
+        Destroy(objectToDestroy);
     }
 }
