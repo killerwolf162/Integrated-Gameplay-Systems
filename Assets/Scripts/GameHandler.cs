@@ -23,9 +23,9 @@ public class GameHandler : MonoBehaviour
 
     private void Update()
     {
-        foreach (var updateable in _updateables)
+        for (int i = 0; i < _updateables.Count; i++)
         {
-            updateable.Update();
+            _updateables[i].Update();
         }
     }
 

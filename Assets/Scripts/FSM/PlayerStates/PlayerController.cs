@@ -12,9 +12,7 @@ namespace PlayerNS
         public PlayerIdle idleState { get; private set; } = new PlayerIdle();
         public PlayerMove moveState { get; private set; } = new PlayerMove();
 
-
         public Rigidbody2D rb;
-
 
         private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
         new Bullet(5, Color.black),
@@ -63,7 +61,7 @@ namespace PlayerNS
             _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool));
-            _inputHandler.BindKeyToCommand(KeyCode.E, KeypressType.Down, new ShootBulletCommand(_bulletPool));
+            _inputHandler.BindKeyToCommand(KeyCode.Mouse0, KeypressType.Down, new ShootBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.R, KeypressType.Down, new ReturnBulletToPoolCommand(_bulletPool));
         }
 

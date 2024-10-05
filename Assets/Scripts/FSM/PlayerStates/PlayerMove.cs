@@ -16,7 +16,7 @@ namespace PlayerNS
         {
             Vector3 dir = new Vector3(runner.MoveDirection().x, runner.MoveDirection().y ,0);
 
-            runner.rb.MovePosition(runner.gameobject.transform.position + dir * Time.deltaTime * _moveSpeed);
+            runner.rb.MovePosition(runner.gameobject.transform.position + dir * _moveSpeed * Time.deltaTime);
 
             if (runner.MoveDirection().magnitude < 0.1)
             {
