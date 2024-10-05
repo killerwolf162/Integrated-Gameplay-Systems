@@ -1,9 +1,9 @@
 ﻿public class ShootBulletCommand : ICommand
 {
 
-    private ObjectPool<IBullet> _bulletPool;
+    private ObjectPool<Bullet> _bulletPool;
 
-    public ShootBulletCommand(ObjectPool<IBullet> bulletPool)
+    public ShootBulletCommand(ObjectPool<Bullet> bulletPool)
     {
         this._bulletPool = bulletPool;
     }

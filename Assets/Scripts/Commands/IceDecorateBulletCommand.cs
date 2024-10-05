@@ -3,11 +3,11 @@
 public class IceDecorateBulletCommand : ICommand
 {
 
-    private ObjectPool<IBullet> _bulletPool;
+    private ObjectPool<Bullet> _bulletPool;
 
     private int _iceDamage = 5;
 
-    public IceDecorateBulletCommand(ObjectPool<IBullet> bulletPool)
+    public IceDecorateBulletCommand(ObjectPool<Bullet> bulletPool)
     {
         this._bulletPool = bulletPool;
     }

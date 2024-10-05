@@ -6,14 +6,17 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-
+    [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private int _bulletDamage;
+    [SerializeField] private Color baseBulletColor;
 
     public ISceneObject _player;
 
     private List<ISceneObject> _updateables = new List<ISceneObject>();
-    private GameObject _bullet;
+
+    private Bullet _bullet;
+    
 
     private void Start()
     {
@@ -45,9 +48,9 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public GameObject CreateBullet()
+    public Bullet CreateBullet()
     {
-        _bullet = Instantiate(_bulletPrefab);
+        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, baseBulletColor);
         return _bullet;
     }
 
