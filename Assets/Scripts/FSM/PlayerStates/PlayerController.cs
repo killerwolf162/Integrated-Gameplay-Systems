@@ -27,6 +27,14 @@ namespace PlayerNS
             GameHandler.instance.CreateBullet(),
             GameHandler.instance.CreateBullet(),
             GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
         });
 
         private InputHandler _inputHandler = new InputHandler();
