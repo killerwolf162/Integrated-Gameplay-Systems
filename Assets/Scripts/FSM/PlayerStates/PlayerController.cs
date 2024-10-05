@@ -15,26 +15,26 @@ namespace PlayerNS
         public Rigidbody2D rb;
 
         private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
+            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black)
     });
 
         private InputHandler _inputHandler = new InputHandler();
@@ -56,6 +56,14 @@ namespace PlayerNS
             stateMachine = new StateMachine<PlayerController>(this);
             stateMachine.SetState(idleState);
 
+            //initialize bullet pool at start
+            foreach (Bullet bullet in _bulletPool._inactivePool)
+            {
+                Debug.Log("set death event");
+                bullet.OnDie += OnBulletDie;
+                bullet.Start();
+            }
+
             //initialize input bindings
             _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
@@ -69,8 +77,17 @@ namespace PlayerNS
         {
             _inputHandler.HandleInput();
 
+            Debug.Log(_bulletPool._activePool.Count);
+            Debug.Log(_bulletPool._inactivePool.Count);
+
+
             //update loop statemachine
             stateMachine?.Update();
+        }
+
+        public void OnBulletDie(Bullet bullet)
+        {
+            _bulletPool.ReturnItemToPool(bullet);
         }
 
         public GameObject GameObject()

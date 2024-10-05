@@ -19,17 +19,14 @@ public class ReturnBulletToPoolCommand : ICommand
 
     public void ReturnBullet()
     {
-        List<IBullet> bulletList = new List<IBullet>();
+        List<IBullet> bulletToDisable = new List<IBullet>();
 
         foreach (Bullet bullet in _bulletPool._activePool)
         {
-            if(bullet.timer > bullet.timeOutTime)
-            {
-                bulletList.Add(bullet);
-            }
+            bulletToDisable.Add(bullet);
         }
 
-        foreach (Bullet bullet in bulletList)
+        foreach (Bullet bullet in bulletToDisable)
         {
             _bulletPool.ReturnItemToPool(bullet);
         }     

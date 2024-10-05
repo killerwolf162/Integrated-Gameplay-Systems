@@ -6,14 +6,13 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-
+    [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private GameObject _bulletPrefab;
-
+    
     public ISceneObject _player;
 
     private List<ISceneObject> _updateables = new List<ISceneObject>();
-    private GameObject _bullet;
+    
 
     private void Start()
     {
@@ -45,10 +44,9 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public GameObject CreateBullet()
+    public void CreateBullet(GameObject bullet)
     {
-        _bullet = Instantiate(_bulletPrefab);
-        return _bullet;
+        Instantiate(bullet);
     }
 
     public void DestroyObject(GameObject objectToDestroy)
