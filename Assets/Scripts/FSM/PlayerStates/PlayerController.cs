@@ -12,35 +12,33 @@ namespace PlayerNS
         public PlayerIdle idleState { get; private set; } = new PlayerIdle();
         public PlayerMove moveState { get; private set; } = new PlayerMove();
 
-        [Header("General")]
         public Rigidbody2D rb;
-        public GameObject gameobject { get; private set; }
 
-        //can probably be done better by instantiating them with a for loop
-        private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-        new Bullet(5, Color.black),
-    });
+        private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>() {
+
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+        });
 
         private InputHandler _inputHandler = new InputHandler();
+        public GameObject gameobject { get; private set; }
 
         public PlayerController(GameObject gameobject)
         {
@@ -58,13 +56,19 @@ namespace PlayerNS
             stateMachine = new StateMachine<PlayerController>(this);
             stateMachine.SetState(idleState);
 
+            //initialize bullet pool at start
+            foreach (Bullet bullet in _bulletPool._inactivePool)
+            {
+                bullet.OnDie += OnBulletDie;
+                bullet.Start();
+            }
+
             //initialize input bindings
             _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool));
-            _inputHandler.BindKeyToCommand(KeyCode.E, KeypressType.Down, new ShootBulletCommand(_bulletPool));
-            _inputHandler.BindKeyToCommand(KeyCode.R, KeypressType.Down, new ReturnBulletToPoolCommand(_bulletPool));
+            _inputHandler.BindKeyToCommand(KeyCode.Mouse0, KeypressType.Down, new ShootBulletCommand(_bulletPool));
         }
 
         public virtual void Update()
@@ -73,6 +77,11 @@ namespace PlayerNS
 
             //update loop statemachine
             stateMachine?.Update();
+        }
+
+        public void OnBulletDie(Bullet _bullet)
+        {         
+            _bulletPool.ReturnItemToPool(_bullet);
         }
 
         public GameObject GameObject()

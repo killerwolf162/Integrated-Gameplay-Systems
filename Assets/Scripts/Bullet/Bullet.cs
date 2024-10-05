@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class Bullet : IBullet, ISceneObject
     public Color color { get; set; }
     public bool active { get; set; }
 
+    public event Action<Bullet> OnDie;
+
     public GameObject gameobject => bullet;
     public GameObject bullet;
 
@@ -17,51 +20,64 @@ public class Bullet : IBullet, ISceneObject
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
 
-    public Bullet(int damage, Color color)
+    private Vector3 _startPosition;
+
+    public Bullet(GameObject bulletPrefab, int damage, Color color)
     {
+        bullet = bulletPrefab;
         this.damage = damage;
         this.color = color;       
     }
-    public void Decorate(BulletDecorator decorator)
-    {
-        decorator.Decorate(this);   
-    }
-    public void ShootBullet()
-    {
-        Debug.Log("I shoot");
-        Start();      
-    }
-    public void OnEnableObject()
-    {
-        ShootBullet();      
-    }
-    public void OnDisableObject()
-    {
-        GameHandler.instance.DestroyObject(bullet);
-        GameHandler.instance.UnSubscribe(this);
-        timer = 0;
-    }
+
     public void Start()
-    {
-        GameHandler.instance.Subscribe(this);
-        bullet = GameHandler.instance.CreateBullet();
-
-        if(_rig == null)
+    {    
+        if (_rig == null)
             _rig = bullet.GetComponent<Rigidbody2D>();
-        if(_rend == null)
+        if (_rend == null)
             _rend = bullet.GetComponent<SpriteRenderer>();
-
-        _rend.color = this.color;
-        _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
-        Update();
     }
+
     public void Update()
     {
         timer += Time.deltaTime;
 
         if (timer > timeOutTime)
         {
-            bullet.SetActive(false);
+            Die();
         }
     }
+
+    public void Die()
+    {
+        OnDie?.Invoke(this);
+    }
+
+    public void Decorate(BulletDecorator decorator)
+    {
+        decorator.Decorate(this);
+    }
+
+    public void ShootBullet()
+    {
+    }
+
+    public void OnEnableObject()
+    {
+        bullet.SetActive(true);
+        GameHandler.instance.Subscribe(this);
+        _startPosition = bullet.transform.position;
+
+        _rend.color = color;
+        _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
+    }
+
+    public void OnDisableObject()
+    {
+        GameHandler.instance.UnSubscribe(this);
+        bullet.SetActive(false);
+        bullet.transform.position = _startPosition;
+
+        timer = 0;
+    }
+
 }
