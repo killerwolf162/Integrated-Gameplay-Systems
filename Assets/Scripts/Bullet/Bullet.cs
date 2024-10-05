@@ -22,25 +22,30 @@ public class Bullet : IBullet, ISceneObject
         this.damage = damage;
         this.color = color;       
     }
+
     public void Decorate(BulletDecorator decorator)
     {
         decorator.Decorate(this);   
     }
+
     public void ShootBullet()
     {
         Debug.Log("I shoot");
         Start();      
     }
+
     public void OnEnableObject()
     {
         ShootBullet();      
     }
+
     public void OnDisableObject()
     {
         GameHandler.instance.DestroyObject(bullet);
         GameHandler.instance.UnSubscribe(this);
         timer = 0;
     }
+
     public void Start()
     {
         GameHandler.instance.Subscribe(this);
@@ -55,6 +60,7 @@ public class Bullet : IBullet, ISceneObject
         _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
         Update();
     }
+
     public void Update()
     {
         timer += Time.deltaTime;
