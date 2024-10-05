@@ -3,10 +3,10 @@
 public class FireDecorateBulletCommand : ICommand
 {
 
-    private ObjectPool<IBullet> _bulletPool;
+    private ObjectPool<Bullet> _bulletPool;
     private int _fireDamage = 5;
 
-    public FireDecorateBulletCommand(ObjectPool<IBullet> bulletPool)
+    public FireDecorateBulletCommand(ObjectPool<Bullet> bulletPool)
     {
         this._bulletPool = bulletPool;
     }

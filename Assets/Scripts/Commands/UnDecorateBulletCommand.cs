@@ -2,11 +2,11 @@
 
 public class UnDecorateBulletCommand : ICommand
 {
-    private ObjectPool<IBullet> _bulletPool;
+    private ObjectPool<Bullet> _bulletPool;
 
     private int _damage = 5;
 
-    public UnDecorateBulletCommand(ObjectPool<IBullet> bulletPool)
+    public UnDecorateBulletCommand(ObjectPool<Bullet> bulletPool)
     {
         this._bulletPool = bulletPool;
     }

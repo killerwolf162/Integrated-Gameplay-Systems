@@ -14,28 +14,20 @@ namespace PlayerNS
 
         public Rigidbody2D rb;
 
-        private ObjectPool<IBullet> _bulletPool = new ObjectPool<IBullet>(new List<IBullet>() {
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black),
-            new Bullet(GameHandler.instance.bulletPrefab, 5, Color.black)
-    });
+        private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>() {
+
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+            GameHandler.instance.CreateBullet(),
+        });
 
         private InputHandler _inputHandler = new InputHandler();
         public GameObject gameobject { get; private set; }
@@ -59,7 +51,6 @@ namespace PlayerNS
             //initialize bullet pool at start
             foreach (Bullet bullet in _bulletPool._inactivePool)
             {
-                Debug.Log("set death event");
                 bullet.OnDie += OnBulletDie;
                 bullet.Start();
             }
@@ -70,24 +61,19 @@ namespace PlayerNS
             _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Mouse0, KeypressType.Down, new ShootBulletCommand(_bulletPool));
-            _inputHandler.BindKeyToCommand(KeyCode.R, KeypressType.Down, new ReturnBulletToPoolCommand(_bulletPool));
         }
 
         public virtual void Update()
         {
             _inputHandler.HandleInput();
 
-            Debug.Log(_bulletPool._activePool.Count);
-            Debug.Log(_bulletPool._inactivePool.Count);
-
-
             //update loop statemachine
             stateMachine?.Update();
         }
 
-        public void OnBulletDie(Bullet bullet)
-        {
-            _bulletPool.ReturnItemToPool(bullet);
+        public void OnBulletDie(Bullet _bullet)
+        {         
+            _bulletPool.ReturnItemToPool(_bullet);
         }
 
         public GameObject GameObject()

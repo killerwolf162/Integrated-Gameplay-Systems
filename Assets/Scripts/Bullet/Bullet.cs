@@ -20,6 +20,8 @@ public class Bullet : IBullet, ISceneObject
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
 
+    private Vector3 _startPosition;
+
     public Bullet(GameObject bulletPrefab, int damage, Color color)
     {
         bullet = bulletPrefab;
@@ -28,14 +30,11 @@ public class Bullet : IBullet, ISceneObject
     }
 
     public void Start()
-    {
-        GameHandler.instance.CreateBullet(bullet);
+    {    
         if (_rig == null)
             _rig = bullet.GetComponent<Rigidbody2D>();
         if (_rend == null)
             _rend = bullet.GetComponent<SpriteRenderer>();
-
-        bullet.SetActive(false);
     }
 
     public void Update()
@@ -44,7 +43,6 @@ public class Bullet : IBullet, ISceneObject
 
         if (timer > timeOutTime)
         {
-            Debug.Log("I die");
             Die();
         }
     }
@@ -61,14 +59,13 @@ public class Bullet : IBullet, ISceneObject
 
     public void ShootBullet()
     {
-        Debug.Log("I shoot");
-
     }
 
     public void OnEnableObject()
     {
         bullet.SetActive(true);
-        GameHandler.instance.Subscribe(this);      
+        GameHandler.instance.Subscribe(this);
+        _startPosition = bullet.transform.position;
 
         _rend.color = color;
         _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
@@ -78,8 +75,9 @@ public class Bullet : IBullet, ISceneObject
     {
         GameHandler.instance.UnSubscribe(this);
         bullet.SetActive(false);
+        bullet.transform.position = _startPosition;
 
-        OnDie = null;
+        timer = 0;
     }
 
 }
