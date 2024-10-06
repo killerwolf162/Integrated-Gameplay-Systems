@@ -1,4 +1,5 @@
 public interface IUpdateable
 {
-    public void Update();
+    public abstract void Start();
+    public abstract void Update();
 }
