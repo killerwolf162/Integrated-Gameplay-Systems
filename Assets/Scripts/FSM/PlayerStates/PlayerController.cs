@@ -1,10 +1,11 @@
 using FSM;
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
 namespace PlayerNS
 {
-    public class PlayerController : IStateRunner, ISceneObject, IAbilityActor
+    public class PlayerController : IStateRunner, ISceneObject, IAbilityActor, IShooter
     {
         [Header("StateMachine")]
         public StateMachine<PlayerController> stateMachine;
@@ -12,45 +13,42 @@ namespace PlayerNS
         public PlayerIdle idleState { get; private set; } = new PlayerIdle();
         public PlayerMove moveState { get; private set; } = new PlayerMove();
 
+        public GameObject gameobject { get; private set; }
+
         public Rigidbody2D rb;
 
-        private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>() {
-
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-        });
+        private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>(){});
 
         private InputHandler _inputHandler = new InputHandler();
-        public GameObject gameobject { get; private set; }
+
+        private Camera _mainCam;
+        private Vector3 _mousePos;
+
+        private int _spellCount = 25;
+
+        private int _fireDamage;
+        private int _iceDamage;
+        private int _baseDamage;
 
         public PlayerController(GameObject gameobject)
         {
             this.gameobject = gameobject;
-            rb = gameobject.GetComponent<Rigidbody2D>();
+            rb = gameobject.GetComponent<Rigidbody2D>();  
             Start();
         }
 
-
         public virtual void Start()
         {
+            GameObject bulletObject = Resources.Load("Bullet", typeof(GameObject)) as GameObject;
+
+            for (int i = 0; i < _spellCount; i++) // creates bullets/spels and puts them into objectpool
+            {
+                var bullet = GameHandler.instance.InstantiateNew(bulletObject);
+                _bulletPool._inactivePool.Add(CreateBullet(bullet));
+            }
+
             GameHandler.instance.Subscribe(this);
+            _mainCam = GameHandler.instance.mainCam;
 
             //initialize statemachine and entry state
             stateMachine = new StateMachine<PlayerController>(this);
@@ -64,11 +62,10 @@ namespace PlayerNS
             }
 
             //initialize input bindings
-            //_inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
-            _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new FireballAbility(this));
-            _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
-            _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
-            _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool));
+            _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
+            _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool, _fireDamage));
+            _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool, _iceDamage));
+            _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool, _baseDamage));
             _inputHandler.BindKeyToCommand(KeyCode.Mouse0, KeypressType.Down, new ShootBulletCommand(_bulletPool));
         }
 
@@ -78,6 +75,8 @@ namespace PlayerNS
 
             //update loop statemachine
             stateMachine?.Update();
+
+            SetCameraPosition();
         }
 
         public void OnBulletDie(Bullet _bullet)
@@ -90,15 +89,41 @@ namespace PlayerNS
             return gameobject;
         }
 
-        public Vector2 GetAimDirection()
+        public Bullet CreateBullet(GameObject bulletObject)
         {
-            return new Vector2(0f, 1f);
+            Bullet bullet = new Bullet(bulletObject, this, _baseDamage, Color.black);
+            return bullet;
+        }
+
+        public Vector2 GetAimDirection(GameObject objectToAim)
+        {
+            _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+            var directionToGive = _mousePos - objectToAim.transform.position;
+
+            return directionToGive;
+        }
+
+        public Quaternion GetBulletRotation(GameObject objectToAim)
+        {
+            _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 rotation = _mousePos - objectToAim.transform.position;
+            float zRotation = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+
+            return Quaternion.Euler(0, 0, zRotation - 90);
         }
 
         public Vector2 MoveDirection()
         {
             Vector2 moveDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             return moveDir;
+        }
+
+        public void SetCameraPosition() // sets player position as camera position
+        {
+            Vector3 playerPosition = gameobject.transform.position;
+            playerPosition = playerPosition + new Vector3(0, 0, -1);
+
+            GameHandler.instance.mainCam.transform.position = playerPosition;
         }
     }
 }

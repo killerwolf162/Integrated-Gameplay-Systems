@@ -17,7 +17,6 @@ public class ElementDecorator : BulletDecorator
     {
         if (bullet.elementalBulletTypes.Contains(bulletType))
         {
-            Debug.Log("This bullet already has this type");
             return bullet;
         }
         if (bullet.elementalBulletTypes.Contains(ElementalBulletTypes.Normal)) // check if bullet is not decorated
@@ -26,13 +25,11 @@ public class ElementDecorator : BulletDecorator
             bullet.elementalBulletTypes.Remove(ElementalBulletTypes.Normal);
             bullet.damage += damage;
             bullet.color = color;
-            Debug.Log("Decorate bullet with [" + string.Join(", ", bulletType) + "]");
             return bullet;
         }
 
         else // if bullet is already decorted with same or other decoration, return
         {
-            Debug.Log("Bullet type switched to " + "[" + bulletType + "]") ;
             bullet.elementalBulletTypes.Clear();
             bullet.elementalBulletTypes.Add(bulletType);
             bullet.color = color;
