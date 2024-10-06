@@ -9,6 +9,6 @@ public class FireballAbility : AbilityBase, ICommand
 
     public void Execute()
     {
-        Fireball fireball = new Fireball(actor.GetAimDirection());
+        Fireball fireball = new Fireball(actor.GameObject().transform.position, actor.GetAimDirection());
     }
 }

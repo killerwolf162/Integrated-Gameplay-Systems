@@ -71,7 +71,7 @@ public class Bullet : IBullet, ISceneObject
         bullet.transform.rotation = _shooter.GetBulletRotation(bullet);
 
         _rend.color = color;
-        _rig.AddForce(_shooter.GetAimDirection(bullet).normalized * _bulletSpeed, ForceMode2D.Impulse);
+        _rig.AddForce(_shooter.GetAimDirection().normalized * _bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void OnDisableObject()

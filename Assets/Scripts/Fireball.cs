@@ -4,12 +4,14 @@ public class Fireball : ISceneObject
 {
     public GameObject gameobject { get; private set; }
 
+    private Vector2 _startPosition;
     private Vector2 _direction;
 
     private float _aliveTime = 2f;
 
-    public Fireball(Vector2 direction)
+    public Fireball(Vector2 position, Vector2 direction)
     {
+        _startPosition = position;
         _direction = direction;
         Start();
     }
@@ -17,7 +19,8 @@ public class Fireball : ISceneObject
     public void Start()
     {
         GameObject fireballObject = Resources.Load("Fireball", typeof(GameObject)) as GameObject;
-        gameobject = GameHandler.instance.InstatiateNew(fireballObject);
+        gameobject = GameHandler.instance.InstantiateNew(fireballObject);
+        gameobject.transform.position = _startPosition;
         GameHandler.instance.Subscribe(this);
     }
 
