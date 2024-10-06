@@ -1,0 +1,31 @@
+using FSM;
+using UnityEngine;
+
+namespace Enemy
+{
+    public class EnemyChase : AState<EnemyBehaviour>
+    {
+        private float _chaseSpeed = 2;
+
+        public override void Start(EnemyBehaviour runner)
+        {
+            Debug.Log("Enter Chase");
+            base.Start(runner);
+        }
+
+        public override void Update(EnemyBehaviour runner)
+        {
+            base.Update(runner);
+
+            runner.gameobject.transform.position = Vector3.MoveTowards(runner.gameobject.transform.position, runner.player.position, _chaseSpeed * Time.deltaTime);
+
+            if (!runner.inChaseRange) onSwitch(runner.idleState);
+        }
+
+        public override void Complete(EnemyBehaviour runner)
+        {
+            base.Complete(runner);
+        }
+
+    }
+}
