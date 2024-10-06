@@ -62,7 +62,8 @@ namespace PlayerNS
             }
 
             //initialize input bindings
-            _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
+            //_inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
+            _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new FireballAbility(this));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool, _fireDamage));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool, _iceDamage));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool, _baseDamage));
@@ -95,18 +96,18 @@ namespace PlayerNS
             return bullet;
         }
 
-        public Vector2 GetAimDirection(GameObject objectToAim)
+        public Vector2 GetAimDirection()
         {
             _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-            var directionToGive = _mousePos - objectToAim.transform.position;
+            var directionToGive = _mousePos - gameobject.transform.position;
 
             return directionToGive;
         }
 
-        public Quaternion GetBulletRotation(GameObject objectToAim)
+        public Quaternion GetBulletRotation()
         {
             _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-            Vector3 rotation = _mousePos - objectToAim.transform.position;
+            Vector3 rotation = _mousePos - gameobject.transform.position;
             float zRotation = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
 
             return Quaternion.Euler(0, 0, zRotation - 90);
@@ -118,12 +119,9 @@ namespace PlayerNS
             return moveDir;
         }
 
-        public void SetCameraPosition() // sets player position as camera position
+        public void SetCameraPosition()
         {
-            Vector3 playerPosition = gameobject.transform.position;
-            playerPosition = playerPosition + new Vector3(0, 0, -1);
-
-            GameHandler.instance.mainCam.transform.position = playerPosition;
+            GameHandler.instance.mainCam.transform.position = gameobject.transform.position + new Vector3(0, 0, -10);
         }
     }
 }

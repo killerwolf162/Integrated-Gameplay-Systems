@@ -68,10 +68,10 @@ public class Bullet : IBullet, ISceneObject
         GameHandler.instance.Subscribe(this);
 
         bullet.transform.position = _shooter.GameObject().transform.position;
-        bullet.transform.rotation = _shooter.GetBulletRotation(bullet);
+        bullet.transform.rotation = _shooter.GetBulletRotation();
 
         _rend.color = color;
-        _rig.AddForce(_shooter.GetAimDirection(bullet).normalized * _bulletSpeed, ForceMode2D.Impulse);
+        _rig.AddForce(_shooter.GetAimDirection().normalized * _bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void OnDisableObject()

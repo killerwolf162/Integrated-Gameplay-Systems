@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class FireballAbility : AbilityBase, ICommand
 {
     public IAbilityActor actor { get; private set; }
@@ -11,6 +9,6 @@ public class FireballAbility : AbilityBase, ICommand
 
     public void Execute()
     {
-        Debug.Log($"{actor.GameObject().name} casted a fireball");
+        Fireball fireball = new Fireball(actor.GameObject().transform.position, actor.GetAimDirection());
     }
 }
