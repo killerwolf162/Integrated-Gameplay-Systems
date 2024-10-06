@@ -1,12 +1,15 @@
 using FSM;
+using UnityEngine;
 
 namespace Enemy
 {
     public class EnemyChase : AState<EnemyBehaviour>
     {
+        private float _chaseSpeed = 2;
 
         public override void Start(EnemyBehaviour runner)
         {
+            Debug.Log("Enter Chase");
             base.Start(runner);
         }
 
@@ -14,7 +17,7 @@ namespace Enemy
         {
             base.Update(runner);
 
-            runner.agent.SetDestination(runner.player.position);
+            runner.gameobject.transform.position = Vector3.MoveTowards(runner.gameobject.transform.position, runner.player.position, _chaseSpeed * Time.deltaTime);
 
             if (!runner.inChaseRange) onSwitch(runner.idleState);
         }

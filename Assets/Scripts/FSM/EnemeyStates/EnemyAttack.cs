@@ -11,8 +11,8 @@ namespace Enemy
 
         public override void Start(EnemyBehaviour runner)
         {
+            Debug.Log("Enter Attack");
             base.Start(runner);
-            runner.agent.SetDestination(runner.gameobject.transform.position);
             _currentTime = _attackTimer / 2;
         }
 

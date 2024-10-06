@@ -9,9 +9,11 @@ namespace Enemy
         private Vector3 _walkPoint;
         private float _walkPointRange = 10f;
         private bool _walkPointSet;
+        private float _speed = 2;
 
         public override void Start(EnemyBehaviour runner)
         {
+            Debug.Log("Enter Patrol");
             base.Start(runner);
         }
 
@@ -21,14 +23,14 @@ namespace Enemy
 
             if (!_walkPointSet) GetNewWalkPoint(runner);
 
-            if (_walkPointSet)
+            if (_walkPointSet) 
             {
-                runner.agent.SetDestination(_walkPoint);
+                runner.gameobject.transform.position = Vector3.MoveTowards(runner.gameobject.transform.position, _walkPoint, _speed * Time.deltaTime);
             }
 
             Vector3 disToWalkPoint = runner.gameobject.transform.position - _walkPoint;
 
-            if (disToWalkPoint.magnitude < 1)
+            if (disToWalkPoint.magnitude < 0.1)
             {
                 onSwitch(runner.idleState);
             }
@@ -48,9 +50,7 @@ namespace Enemy
 
             Vector3 pos = runner.gameobject.transform.position;
             _walkPoint = new Vector3(pos.x + randomX, pos.y + randomY, 0);
-
-            //checks if the walkpoint is on the NavMesh 
-            if (NavMesh.SamplePosition(_walkPoint, out _, 1.0f, NavMesh.AllAreas)) _walkPointSet = true;
+            _walkPointSet = true;
         }
 
     }

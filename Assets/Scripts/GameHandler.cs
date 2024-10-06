@@ -65,7 +65,7 @@ public class GameHandler : MonoBehaviour
     {
         foreach (GameObject spawner in _enemySpawners)
         {
-            Vector3 pos = spawner.transform.position;
+            Vector2 pos = spawner.transform.position;
             EnemyBehaviour enemy = new EnemyBehaviour(Instantiate(_enemyPrefab), pos);
 
         }

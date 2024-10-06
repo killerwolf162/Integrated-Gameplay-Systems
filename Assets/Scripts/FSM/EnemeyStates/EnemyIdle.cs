@@ -10,6 +10,7 @@ namespace Enemy
 
         public override void Start(EnemyBehaviour runner)
         {
+            Debug.Log("Enter IdleState");
             base.Start(runner);
             _currentTime = _timer;
         }
