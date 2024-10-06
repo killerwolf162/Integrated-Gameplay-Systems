@@ -1,4 +1,6 @@
+using Enemy;
 using PlayerNS;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +11,12 @@ public class GameHandler : MonoBehaviour
     [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private int _bulletDamage;
-    [SerializeField] private Color baseBulletColor;
+    [SerializeField] private Color _baseBulletColor;
 
     public ISceneObject _player;
 
     private List<ISceneObject> _updateables = new List<ISceneObject>();
+    [SerializeField] private List<GameObject> _enemySpawners = new List<GameObject>();
 
     private Bullet _bullet;
     
@@ -48,9 +51,14 @@ public class GameHandler : MonoBehaviour
         }
     }
 
+    public void SetEnemySpawners()
+    {
+        
+    }
+
     public Bullet CreateBullet()
     {
-        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, baseBulletColor);
+        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, _baseBulletColor);
         return _bullet;
     }
 

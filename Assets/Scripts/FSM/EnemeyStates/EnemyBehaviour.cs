@@ -69,15 +69,5 @@ namespace Enemy
                 stateMachine.SetState(chaseState);
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(gameobject.transform.position, chaseRange);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(gameobject.transform.position, attackRange);
-        }
-
     }
 }
