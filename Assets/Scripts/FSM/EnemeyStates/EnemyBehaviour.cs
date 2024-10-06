@@ -9,7 +9,8 @@ namespace Enemy
         [Header("General")]
         public Rigidbody2D rb;
         public GameObject gameobject { get; private set; }
-        
+        private Vector2 _startPosition;
+
         [Header("StateMachine")]
         public StateMachine<EnemyBehaviour> stateMachine;
         public ScratchPad sharedData => new ScratchPad();
@@ -31,9 +32,10 @@ namespace Enemy
 
 
         //constructor
-        public EnemyBehaviour(GameObject gameobject)
+        public EnemyBehaviour(GameObject gameobject, Vector3 position)
         {
             this.gameobject = gameobject;
+            gameobject.transform.position = position;
             rb = gameobject.GetComponent<Rigidbody2D>();
             player = GameObject.FindGameObjectWithTag("Player").transform;
             Start();
@@ -45,7 +47,7 @@ namespace Enemy
 
             //initialize statemachine and entry state
             stateMachine = new StateMachine<EnemyBehaviour>(this);
-            stateMachine.SetState(null); //# give state on start
+            stateMachine.SetState(idleState); 
         }
 
         public virtual void Update()

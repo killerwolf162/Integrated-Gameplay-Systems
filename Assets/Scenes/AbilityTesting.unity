@@ -122,6 +122,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &375192395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 375192396}
+  m_Layer: 0
+  m_Name: spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &375192396
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375192395}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.03470248, y: -0.35488263, z: 0.031132419}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &693489791
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,10 +197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8beff14603b55442aad785d4f5b7284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 5534708504395997858, guid: d2705849de2b56e4994793148ca76736, type: 3}
   _playerPrefab: {fileID: 6459709845229553943, guid: fe12fe667e5fcba49ac504812ce0faff, type: 3}
-  _bulletDamage: 5
-  _baseBulletColor: {r: 0, g: 0, b: 0, a: 1}
+  _enemyPrefab: {fileID: 0}
+  _enemySpawners: []
   mainCam: {fileID: 2067533808}
 --- !u!1 &2067533806
 GameObject:
@@ -269,3 +299,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 2067533809}
   - {fileID: 693489793}
+  - {fileID: 375192396}

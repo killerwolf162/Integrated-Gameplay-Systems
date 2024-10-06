@@ -9,7 +9,7 @@ public class EnemySpawner : ISceneObject
 
 
     //constructor
-    private EnemySpawner(GameObject gameobject)
+    public EnemySpawner(GameObject gameobject)
     {
         this.gameobject = gameobject;
         Start();

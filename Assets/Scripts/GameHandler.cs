@@ -1,5 +1,7 @@
+using Enemy;
 using PlayerNS;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class GameHandler : MonoBehaviour
@@ -7,8 +9,11 @@ public class GameHandler : MonoBehaviour
     public static GameHandler instance;
 
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject[] _enemySpawners;
 
     public ISceneObject player;
+    public ISceneObject enemy;
 
     public Camera mainCam;
 
@@ -18,7 +23,8 @@ public class GameHandler : MonoBehaviour
     {
         instance = this;
         player = new PlayerController(Instantiate(_playerPrefab));
-        mainCam = FindAnyObjectByType<Camera>();       
+        mainCam = FindAnyObjectByType<Camera>();
+        SpawnEnemies();
     }
 
     private void Update()
@@ -53,5 +59,15 @@ public class GameHandler : MonoBehaviour
     public void DestroyObject(GameObject objectToDestroy)
     {
         Destroy(objectToDestroy);
+    }
+
+    public void SpawnEnemies()
+    {
+        foreach (GameObject spawner in _enemySpawners)
+        {
+            Vector3 pos = spawner.transform.position;
+            EnemyBehaviour enemy = new EnemyBehaviour(Instantiate(_enemyPrefab), pos);
+
+        }
     }
 }
