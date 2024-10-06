@@ -98,7 +98,7 @@ namespace PlayerNS
 
         public Vector2 GetAimDirection()
         {
-            return new Vector2(0f, 0f); // need to return position of mouse on screen 
+            return new Vector2(0f, 0f);
 
         }
 
@@ -108,7 +108,7 @@ namespace PlayerNS
             return moveDir;
         }
 
-        public void SetCameraPosition()
+        public void SetCameraPosition() // sets player position as camera position
         {
             Vector3 playerPosition = gameobject.transform.position;
             playerPosition = playerPosition + new Vector3(0, 0, -1);
