@@ -48,6 +48,11 @@ public class GameHandler : MonoBehaviour
         }
     }
 
+    public GameObject InstatiateNew(GameObject prefab)
+    {
+        return GameObject.Instantiate(prefab);
+    }
+
     public Bullet CreateBullet()
     {
         _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, baseBulletColor);

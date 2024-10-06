@@ -64,7 +64,8 @@ namespace PlayerNS
             }
 
             //initialize input bindings
-            _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
+            //_inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new DashAbility(this));
+            _inputHandler.BindKeyToCommand(KeyCode.Space, KeypressType.Down, new FireballAbility(this));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha2, KeypressType.Down, new FireDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha3, KeypressType.Down, new IceDecorateBulletCommand(_bulletPool));
             _inputHandler.BindKeyToCommand(KeyCode.Alpha1, KeypressType.Down, new UnDecorateBulletCommand(_bulletPool));
@@ -91,7 +92,7 @@ namespace PlayerNS
 
         public Vector2 GetAimDirection()
         {
-            return new Vector2(0f, 0f);
+            return new Vector2(0f, 1f);
         }
 
         public Vector2 MoveDirection()
