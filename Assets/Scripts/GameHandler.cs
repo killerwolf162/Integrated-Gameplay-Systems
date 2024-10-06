@@ -12,7 +12,7 @@ public class GameHandler : MonoBehaviour
 
     public Camera mainCam;
 
-    private List<ISceneObject> _updateables = new List<ISceneObject>();
+    private List<IUpdateable> _updateables = new List<IUpdateable>();
 
     private void Start()
     {
@@ -29,7 +29,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void Subscribe(ISceneObject updateable)
+    public void Subscribe(IUpdateable updateable)
     {
         if (!_updateables.Contains(updateable))
         {
@@ -37,7 +37,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void UnSubscribe(ISceneObject updateable)
+    public void UnSubscribe(IUpdateable updateable)
     {
         if (_updateables.Contains(updateable))
         {
