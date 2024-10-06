@@ -6,10 +6,7 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-    [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private int _bulletDamage;
-    [SerializeField] private Color _baseBulletColor;
 
     public ISceneObject player;
 
@@ -17,13 +14,11 @@ public class GameHandler : MonoBehaviour
 
     private List<ISceneObject> _updateables = new List<ISceneObject>();
 
-    private Bullet _bullet;  
-
     private void Start()
     {
         instance = this;
         player = new PlayerController(Instantiate(_playerPrefab));
-        mainCam = FindAnyObjectByType<Camera>();
+        mainCam = FindAnyObjectByType<Camera>();       
     }
 
     private void Update()
@@ -50,10 +45,9 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public Bullet CreateBullet()
+    public GameObject InstantiateNew(GameObject gameObject)
     {
-        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, _baseBulletColor);
-        return _bullet;
+        return Instantiate(gameObject);
     }
 
     public void DestroyObject(GameObject objectToDestroy)

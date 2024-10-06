@@ -169,7 +169,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 5534708504395997858, guid: d2705849de2b56e4994793148ca76736, type: 3}
   _playerPrefab: {fileID: 6459709845229553943, guid: fe12fe667e5fcba49ac504812ce0faff, type: 3}
   _bulletDamage: 5
-  baseBulletColor: {r: 0, g: 0, b: 0, a: 1}
+  _baseBulletColor: {r: 0, g: 0, b: 0, a: 1}
   mainCam: {fileID: 2067533808}
 --- !u!1 &2067533806
 GameObject:

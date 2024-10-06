@@ -14,28 +14,26 @@ public class Bullet : IBullet, ISceneObject
     public GameObject gameobject => bullet;
     public GameObject bullet;
 
-    public float timer = 0f;
-    public float timeOutTime = 2f;
+    private IShooter _shooter;
 
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
 
-    private Camera _mainCam;
-    private Vector3 _mousePos;
+    public float timer = 0f;
+    public float timeOutTime = 2f;
 
     private int _bulletSpeed = 10;
 
-    public Bullet(GameObject bulletPrefab, int damage, Color color)
+    public Bullet(GameObject bulletPrefab, IShooter shooter, int damage, Color color)
     {
         bullet = bulletPrefab;
         this.damage = damage;
-        this.color = color;       
+        this.color = color;
+        _shooter = shooter;
     }
 
     public void Start()
     {
-        _mainCam = GameHandler.instance.mainCam;
-
         OnDisableObject();
 
         if (_rig == null)
@@ -69,12 +67,11 @@ public class Bullet : IBullet, ISceneObject
         bullet.SetActive(true);
         GameHandler.instance.Subscribe(this);
 
-        bullet.transform.position = _mainCam.transform.position + new Vector3(0,0,1);
-
-        bullet.transform.rotation = GetBulletRotation();
+        bullet.transform.position = _shooter.GameObject().transform.position;
+        bullet.transform.rotation = _shooter.GetBulletRotation(bullet);
 
         _rend.color = color;
-        _rig.AddForce(GetAimDirection().normalized * _bulletSpeed, ForceMode2D.Impulse);
+        _rig.AddForce(_shooter.GetAimDirection(bullet).normalized * _bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void OnDisableObject()
@@ -83,23 +80,6 @@ public class Bullet : IBullet, ISceneObject
         bullet.SetActive(false);
 
         timer = 0;
-    }
-
-    public Vector3 GetAimDirection()
-    {
-        _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-        var directionToGive = _mousePos - bullet.transform.position;
-
-        return directionToGive;
-    }
-
-    public Quaternion GetBulletRotation()
-    {
-        _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 rotation = _mousePos - bullet.transform.position;
-        float zRotation = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
-
-        return Quaternion.Euler(0, 0, zRotation - 90);
     }
 
 }

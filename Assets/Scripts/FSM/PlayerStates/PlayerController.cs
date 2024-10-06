@@ -1,10 +1,11 @@
 using FSM;
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
 namespace PlayerNS
 {
-    public class PlayerController : IStateRunner, ISceneObject, IAbilityActor
+    public class PlayerController : IStateRunner, ISceneObject, IAbilityActor, IShooter
     {
         [Header("StateMachine")]
         public StateMachine<PlayerController> stateMachine;
@@ -16,46 +17,38 @@ namespace PlayerNS
 
         public Rigidbody2D rb;
 
-        private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>() {
-
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-            GameHandler.instance.CreateBullet(),
-        });
+        private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>(){});
 
         private InputHandler _inputHandler = new InputHandler();
+
+        private Camera _mainCam;
+        private Vector3 _mousePos;
+
+        private int _spellCount = 25;
 
         private int _fireDamage;
         private int _iceDamage;
         private int _baseDamage;
-        
+
         public PlayerController(GameObject gameobject)
         {
             this.gameobject = gameobject;
-            rb = gameobject.GetComponent<Rigidbody2D>();
+            rb = gameobject.GetComponent<Rigidbody2D>();  
             Start();
         }
 
-
         public virtual void Start()
         {
+            GameObject bulletObject = Resources.Load("Bullet", typeof(GameObject)) as GameObject;
+
+            for (int i = 0; i < _spellCount; i++) // creates bullets/spels and puts them into objectpool
+            {
+                var bullet = GameHandler.instance.InstantiateNew(bulletObject);
+                _bulletPool._inactivePool.Add(CreateBullet(bullet));
+            }
+
             GameHandler.instance.Subscribe(this);
+            _mainCam = GameHandler.instance.mainCam;
 
             //initialize statemachine and entry state
             stateMachine = new StateMachine<PlayerController>(this);
@@ -96,10 +89,27 @@ namespace PlayerNS
             return gameobject;
         }
 
-        public Vector2 GetAimDirection()
+        public Bullet CreateBullet(GameObject bulletObject)
         {
-            return new Vector2(0f, 0f);
+            Bullet bullet = new Bullet(bulletObject, this, _baseDamage, Color.black);
+            return bullet;
+        }
 
+        public Vector2 GetAimDirection(GameObject objectToAim)
+        {
+            _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+            var directionToGive = _mousePos - objectToAim.transform.position;
+
+            return directionToGive;
+        }
+
+        public Quaternion GetBulletRotation(GameObject objectToAim)
+        {
+            _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 rotation = _mousePos - objectToAim.transform.position;
+            float zRotation = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+
+            return Quaternion.Euler(0, 0, zRotation - 90);
         }
 
         public Vector2 MoveDirection()
