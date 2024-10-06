@@ -52,7 +52,7 @@ public class GameHandler : MonoBehaviour
 
     public Bullet CreateBullet()
     {
-        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, baseBulletColor);
+        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, _baseBulletColor);
         return _bullet;
     }
 
