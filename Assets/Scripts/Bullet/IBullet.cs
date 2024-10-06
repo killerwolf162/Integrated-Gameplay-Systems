@@ -10,7 +10,5 @@ public interface IBullet : IPoolable
     public HashSet<ElementalBulletTypes> elementalBulletTypes { get; set; }
 
     public void Decorate(BulletDecorator decorator);
-
-    public void ShootBullet();
 }
 

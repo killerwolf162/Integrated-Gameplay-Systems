@@ -14,23 +14,28 @@ public class Bullet : IBullet, ISceneObject
     public GameObject gameobject => bullet;
     public GameObject bullet;
 
-    public float timer = 0f;
-    public float timeOutTime = 2f;
+    private IShooter _shooter;
 
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
 
-    private Vector3 _startPosition;
+    public float timer = 0f;
+    public float timeOutTime = 2f;
 
-    public Bullet(GameObject bulletPrefab, int damage, Color color)
+    private int _bulletSpeed = 10;
+
+    public Bullet(GameObject bulletPrefab, IShooter shooter, int damage, Color color)
     {
         bullet = bulletPrefab;
         this.damage = damage;
-        this.color = color;       
+        this.color = color;
+        _shooter = shooter;
     }
 
     public void Start()
-    {    
+    {
+        OnDisableObject();
+
         if (_rig == null)
             _rig = bullet.GetComponent<Rigidbody2D>();
         if (_rend == null)
@@ -57,25 +62,22 @@ public class Bullet : IBullet, ISceneObject
         decorator.Decorate(this);
     }
 
-    public void ShootBullet()
-    {
-    }
-
     public void OnEnableObject()
     {
         bullet.SetActive(true);
         GameHandler.instance.Subscribe(this);
-        _startPosition = bullet.transform.position;
+
+        bullet.transform.position = _shooter.GameObject().transform.position;
+        bullet.transform.rotation = _shooter.GetBulletRotation();
 
         _rend.color = color;
-        _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
+        _rig.AddForce(_shooter.GetAimDirection().normalized * _bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void OnDisableObject()
     {
         GameHandler.instance.UnSubscribe(this);
         bullet.SetActive(false);
-        bullet.transform.position = _startPosition;
 
         timer = 0;
     }

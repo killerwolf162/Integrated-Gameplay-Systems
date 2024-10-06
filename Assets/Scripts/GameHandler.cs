@@ -1,6 +1,4 @@
-using Enemy;
 using PlayerNS;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,23 +6,19 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-    [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private int _bulletDamage;
-    [SerializeField] private Color _baseBulletColor;
 
-    public ISceneObject _player;
+    public ISceneObject player;
 
-    private List<ISceneObject> _updateables = new List<ISceneObject>();
-    [SerializeField] private List<GameObject> _enemySpawners = new List<GameObject>();
+    public Camera mainCam;
 
-    private Bullet _bullet;
-    
+    private List<IUpdateable> _updateables = new List<IUpdateable>();
 
     private void Start()
     {
         instance = this;
-        _player = new PlayerController(Instantiate(_playerPrefab));
+        player = new PlayerController(Instantiate(_playerPrefab));
+        mainCam = FindAnyObjectByType<Camera>();       
     }
 
     private void Update()
@@ -35,7 +29,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void Subscribe(ISceneObject updateable)
+    public void Subscribe(IUpdateable updateable)
     {
         if (!_updateables.Contains(updateable))
         {
@@ -43,7 +37,7 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void UnSubscribe(ISceneObject updateable)
+    public void UnSubscribe(IUpdateable updateable)
     {
         if (_updateables.Contains(updateable))
         {
@@ -51,15 +45,9 @@ public class GameHandler : MonoBehaviour
         }
     }
 
-    public void SetEnemySpawners()
+    public GameObject InstantiateNew(GameObject gameObject)
     {
-        
-    }
-
-    public Bullet CreateBullet()
-    {
-        _bullet = new Bullet(Instantiate(bulletPrefab), _bulletDamage, _baseBulletColor);
-        return _bullet;
+        return Instantiate(gameObject);
     }
 
     public void DestroyObject(GameObject objectToDestroy)
