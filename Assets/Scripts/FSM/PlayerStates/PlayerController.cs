@@ -104,7 +104,7 @@ namespace PlayerNS
             return directionToGive;
         }
 
-        public Quaternion GetBulletRotation(GameObject objectToAim)
+        public Quaternion GetBulletRotation()
         {
             _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
             Vector3 rotation = _mousePos - gameobject.transform.position;
