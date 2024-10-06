@@ -21,7 +21,7 @@ public class Bullet : IBullet, ISceneObject
     private SpriteRenderer _rend;
 
     private Camera _mainCam;
-    private Vector3 mousePos;
+    private Vector3 _mousePos;
 
     private int _bulletSpeed = 10;
 
@@ -64,10 +64,6 @@ public class Bullet : IBullet, ISceneObject
         decorator.Decorate(this);
     }
 
-    public void ShootBullet()
-    {
-    }
-
     public void OnEnableObject()
     {
         bullet.SetActive(true);
@@ -91,16 +87,16 @@ public class Bullet : IBullet, ISceneObject
 
     public Vector3 GetAimDirection()
     {
-        mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-        var directionToGive = mousePos - bullet.transform.position;
+        _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+        var directionToGive = _mousePos - bullet.transform.position;
 
         return directionToGive;
     }
 
     public Quaternion GetBulletRotation()
     {
-        mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 rotation = mousePos - bullet.transform.position;
+        _mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 rotation = _mousePos - bullet.transform.position;
         float zRotation = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
 
         return Quaternion.Euler(0, 0, zRotation - 90);

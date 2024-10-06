@@ -6,8 +6,9 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-    [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private GameObject _playerPrefab;
+
+    [SerializeField] public GameObject bulletPrefab;
     [SerializeField] private int _bulletDamage;
     [SerializeField] private Color baseBulletColor;
 
@@ -17,10 +18,7 @@ public class GameHandler : MonoBehaviour
 
     private List<ISceneObject> _updateables = new List<ISceneObject>();
 
-    private Bullet _bullet;
-
-    
-    
+    private Bullet _bullet;  
 
     private void Start()
     {
