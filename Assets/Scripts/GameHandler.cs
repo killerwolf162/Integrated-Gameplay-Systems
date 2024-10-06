@@ -6,11 +6,10 @@ public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
 
-    [SerializeField] private GameObject _playerPrefab;
-
     [SerializeField] public GameObject bulletPrefab;
+    [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private int _bulletDamage;
-    [SerializeField] private Color baseBulletColor;
+    [SerializeField] private Color _baseBulletColor;
 
     public ISceneObject player;
 
