@@ -11,17 +11,22 @@ public class GameHandler : MonoBehaviour
     [SerializeField] private int _bulletDamage;
     [SerializeField] private Color baseBulletColor;
 
-    public ISceneObject _player;
+    public ISceneObject player;
+
+    public Camera mainCam;
 
     private List<ISceneObject> _updateables = new List<ISceneObject>();
 
     private Bullet _bullet;
+
+    
     
 
     private void Start()
     {
         instance = this;
-        _player = new PlayerController(Instantiate(_playerPrefab));
+        player = new PlayerController(Instantiate(_playerPrefab));
+        mainCam = FindAnyObjectByType<Camera>();
     }
 
     private void Update()

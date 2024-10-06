@@ -12,6 +12,8 @@ namespace PlayerNS
         public PlayerIdle idleState { get; private set; } = new PlayerIdle();
         public PlayerMove moveState { get; private set; } = new PlayerMove();
 
+        public GameObject gameobject { get; private set; }
+
         public Rigidbody2D rb;
 
         private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>() {
@@ -38,8 +40,7 @@ namespace PlayerNS
         });
 
         private InputHandler _inputHandler = new InputHandler();
-        public GameObject gameobject { get; private set; }
-
+        
         public PlayerController(GameObject gameobject)
         {
             this.gameobject = gameobject;
@@ -77,6 +78,8 @@ namespace PlayerNS
 
             //update loop statemachine
             stateMachine?.Update();
+
+            SetCameraPosition();
         }
 
         public void OnBulletDie(Bullet _bullet)
@@ -91,13 +94,22 @@ namespace PlayerNS
 
         public Vector2 GetAimDirection()
         {
-            return new Vector2(0f, 0f);
+            return new Vector2(0f, 0f); // need to return position of mouse on screen 
+
         }
 
         public Vector2 MoveDirection()
         {
             Vector2 moveDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             return moveDir;
+        }
+
+        public void SetCameraPosition()
+        {
+            Vector3 playerPosition = gameobject.transform.position;
+            playerPosition = playerPosition + new Vector3(0, 0, -1);
+
+            GameHandler.instance.mainCam.transform.position = playerPosition;
         }
     }
 }

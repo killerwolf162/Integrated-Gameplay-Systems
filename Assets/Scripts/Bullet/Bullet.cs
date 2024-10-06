@@ -20,7 +20,10 @@ public class Bullet : IBullet, ISceneObject
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
 
-    private Vector3 _startPosition;
+    private Camera _mainCam;
+    private Vector3 mousePos;
+
+    private int _bulletSpeed = 10;
 
     public Bullet(GameObject bulletPrefab, int damage, Color color)
     {
@@ -30,7 +33,11 @@ public class Bullet : IBullet, ISceneObject
     }
 
     public void Start()
-    {    
+    {
+        _mainCam = GameHandler.instance.mainCam;
+
+        OnDisableObject();
+
         if (_rig == null)
             _rig = bullet.GetComponent<Rigidbody2D>();
         if (_rend == null)
@@ -65,19 +72,38 @@ public class Bullet : IBullet, ISceneObject
     {
         bullet.SetActive(true);
         GameHandler.instance.Subscribe(this);
-        _startPosition = bullet.transform.position;
+
+        bullet.transform.position = _mainCam.transform.position + new Vector3(0,0,1);
+
+        bullet.transform.rotation = GetBulletRotation();
 
         _rend.color = color;
-        _rig.AddForce(new Vector2(0, 10), ForceMode2D.Impulse);
+        _rig.AddForce(GetAimDirection().normalized * _bulletSpeed, ForceMode2D.Impulse);
     }
 
     public void OnDisableObject()
     {
         GameHandler.instance.UnSubscribe(this);
         bullet.SetActive(false);
-        bullet.transform.position = _startPosition;
 
         timer = 0;
+    }
+
+    public Vector3 GetAimDirection()
+    {
+        mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+        var directionToGive = mousePos - bullet.transform.position;
+
+        return directionToGive;
+    }
+
+    public Quaternion GetBulletRotation()
+    {
+        mousePos = _mainCam.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 rotation = mousePos - bullet.transform.position;
+        float zRotation = Mathf.Atan2(rotation.y, rotation.x) * Mathf.Rad2Deg;
+
+        return Quaternion.Euler(0, 0, zRotation - 90);
     }
 
 }
