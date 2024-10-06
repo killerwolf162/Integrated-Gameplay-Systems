@@ -4,11 +4,12 @@ public class UnDecorateBulletCommand : ICommand
 {
     private ObjectPool<Bullet> _bulletPool;
 
-    private int _damage = 5;
+    private int _damage;
 
-    public UnDecorateBulletCommand(ObjectPool<Bullet> bulletPool)
+    public UnDecorateBulletCommand(ObjectPool<Bullet> bulletPool, int damage)
     {
         this._bulletPool = bulletPool;
+        _damage = damage;
     }
 
     public IAbilityActor actor { get; private set; }

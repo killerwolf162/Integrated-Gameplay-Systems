@@ -4,11 +4,12 @@ public class FireDecorateBulletCommand : ICommand
 {
 
     private ObjectPool<Bullet> _bulletPool;
-    private int _fireDamage = 5;
+    private int _fireDamage;
 
-    public FireDecorateBulletCommand(ObjectPool<Bullet> bulletPool)
+    public FireDecorateBulletCommand(ObjectPool<Bullet> bulletPool, int damage)
     {
         this._bulletPool = bulletPool;
+        _fireDamage = damage;
     }
 
     public IAbilityActor actor { get; private set; }

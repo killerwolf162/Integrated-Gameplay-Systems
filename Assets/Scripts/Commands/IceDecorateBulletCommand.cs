@@ -5,11 +5,12 @@ public class IceDecorateBulletCommand : ICommand
 
     private ObjectPool<Bullet> _bulletPool;
 
-    private int _iceDamage = 5;
+    private int _iceDamage;
 
-    public IceDecorateBulletCommand(ObjectPool<Bullet> bulletPool)
+    public IceDecorateBulletCommand(ObjectPool<Bullet> bulletPool, int damage)
     {
         this._bulletPool = bulletPool;
+        _iceDamage = damage;
     }
 
     public IAbilityActor actor { get; private set; }
