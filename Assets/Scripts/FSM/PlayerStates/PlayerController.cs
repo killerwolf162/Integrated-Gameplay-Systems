@@ -16,6 +16,7 @@ namespace PlayerNS
         public GameObject gameobject { get; private set; }
 
         public Rigidbody2D rb;
+        public Collider2D col;
 
         private ObjectPool<Bullet> _bulletPool = new ObjectPool<Bullet>(new List<Bullet>(){});
 
@@ -24,16 +25,21 @@ namespace PlayerNS
         private Camera _mainCam;
         private Vector3 _mousePos;
 
-        private int _spellCount = 25;
+        private float _damageTimeOut;
+
+        private int _spellCount = 15;
+        private int _health = 10;
 
         private int _fireDamage;
         private int _iceDamage;
         private int _baseDamage;
 
+
         public PlayerController(GameObject gameobject)
         {
             this.gameobject = gameobject;
-            rb = gameobject.GetComponent<Rigidbody2D>();  
+            rb = gameobject.GetComponent<Rigidbody2D>();
+            col = gameobject.GetComponent<Collider2D>();
             Start();
         }
 
@@ -74,10 +80,13 @@ namespace PlayerNS
         {
             _inputHandler.HandleInput();
 
+            _damageTimeOut -= Time.deltaTime;
+
             //update loop statemachine
             stateMachine?.Update();
 
             SetCameraPosition();
+            OnCollisionEnter2D(col);
         }
 
         public void OnBulletDie(Bullet _bullet)
@@ -122,6 +131,26 @@ namespace PlayerNS
         public void SetCameraPosition()
         {
             GameHandler.instance.mainCam.transform.position = gameobject.transform.position + new Vector3(0, 0, -10);
+        }
+        private void OnCollisionEnter2D(Collider2D collider)
+        {
+            List<Collider2D> overlappingColliders = new List<Collider2D>();
+            ContactFilter2D enemyFilter = new ContactFilter2D();
+
+            collider.OverlapCollider(enemyFilter, overlappingColliders);
+
+            foreach (var otherCollider in overlappingColliders)
+            {             
+                if (otherCollider.tag == "Enemy")
+                {
+                    if (_damageTimeOut < 0)
+                    {
+                        _health -= 1;
+                        Debug.Log(_health);
+                        _damageTimeOut = 1;
+                    }
+                }
+            }
         }
     }
 }

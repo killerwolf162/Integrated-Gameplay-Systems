@@ -21,6 +21,8 @@ public class GameHandler : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
+
         instance = this;
         player = new PlayerController(Instantiate(_playerPrefab));
         mainCam = FindAnyObjectByType<Camera>();
@@ -32,6 +34,11 @@ public class GameHandler : MonoBehaviour
         for (int i = 0; i < _updateables.Count; i++)
         {
             _updateables[i].Update();
+        }
+
+        if (Time.frameCount % 120 == 0) // spawns enemy every 2 seconds
+        {
+            SpawnEnemies();
         }
     }
 

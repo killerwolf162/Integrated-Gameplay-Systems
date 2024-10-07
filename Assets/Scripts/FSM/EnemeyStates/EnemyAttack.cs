@@ -11,7 +11,7 @@ namespace Enemy
 
         public override void Start(EnemyBehaviour runner)
         {
-            Debug.Log("Enter Attack");
+            //Debug.Log("Enter Attack");
             base.Start(runner);
             _currentTime = _attackTimer / 2;
         }
