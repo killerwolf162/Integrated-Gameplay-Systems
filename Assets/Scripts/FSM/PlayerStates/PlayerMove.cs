@@ -5,7 +5,7 @@ namespace PlayerNS
 {
     public class PlayerMove : AState<PlayerController>
     {
-        private float _moveSpeed = 20f;
+        private float _moveSpeed = 8f;
 
         public override void Start(PlayerController runner)
         {

@@ -13,7 +13,7 @@ namespace Enemy
 
         public override void Start(EnemyBehaviour runner)
         {
-            Debug.Log("Enter Patrol");
+            //Debug.Log("Enter Patrol");
             base.Start(runner);
         }
 

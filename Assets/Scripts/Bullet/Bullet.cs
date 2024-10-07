@@ -18,17 +18,19 @@ public class Bullet : IBullet, ISceneObject
 
     private Rigidbody2D _rig;
     private SpriteRenderer _rend;
+    private Collider2D _col;
 
     public float timer = 0f;
     public float timeOutTime = 2f;
 
-    private int _bulletSpeed = 10;
+    private int _bulletSpeed = 15;
 
     public Bullet(GameObject bulletPrefab, IShooter shooter, int damage, Color color)
     {
         bullet = bulletPrefab;
         this.damage = damage;
         this.color = color;
+        _col = bullet.GetComponent<Collider2D>();
         _shooter = shooter;
     }
 
@@ -44,8 +46,9 @@ public class Bullet : IBullet, ISceneObject
 
     public void Update()
     {
-        timer += Time.deltaTime;
+        OnCollisionEnter2D(_col);
 
+        timer += Time.deltaTime;
         if (timer > timeOutTime)
         {
             Die();
@@ -80,6 +83,24 @@ public class Bullet : IBullet, ISceneObject
         bullet.SetActive(false);
 
         timer = 0;
+    }
+
+    private void OnCollisionEnter2D(Collider2D collider)
+    {
+        List<Collider2D> overlappingColliders = new List<Collider2D>();
+        ContactFilter2D enemyFilter = new ContactFilter2D();
+
+        collider.OverlapCollider(enemyFilter, overlappingColliders);
+
+        foreach (Collider2D otherCollider in overlappingColliders)
+        {
+
+            if (otherCollider.tag == "Enemy")
+            {
+                Die();
+                GameHandler.instance.DestroyObject(otherCollider.gameObject);
+            }
+        }
     }
 
 }

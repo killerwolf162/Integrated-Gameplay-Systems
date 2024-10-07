@@ -1,4 +1,5 @@
 using FSM;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -9,6 +10,7 @@ namespace Enemy
     {
         [Header("General")]
         public Rigidbody2D rb;
+        public Collider2D col;
         public GameObject gameobject { get; private set; }
 
         [Header("StateMachine")]
@@ -36,6 +38,7 @@ namespace Enemy
             gameobject.transform.position = position;
             this.gameobject = gameobject;
             rb = gameobject.GetComponent<Rigidbody2D>();
+            col = gameobject.GetComponent<Collider2D>();
             player = GameObject.FindGameObjectWithTag("Player").transform;
             Start();
         }
@@ -51,26 +54,37 @@ namespace Enemy
 
         public virtual void Update()
         {
+            if (gameobject == null)
+            {
+                GameHandler.instance.UnSubscribe(this);
+            }
+
             //update loop statemachine
             stateMachine?.Update();
             CheckPlayerInRange();
+            if(col != null)
+            {
+                OnCollisionEnter2D(col);
+            }
+
         }
 
         //check if the enemy gives chase or attacks
         public void CheckPlayerInRange()
         {
-
-            Collider2D detectedObject = Physics2D.OverlapCircle(gameobject.transform.position, chaseRange, playerMask);
+            stateMachine.SetState(chaseState); // let AI always be in chase state, no time left to actually make the rest work well - Tom
+/*
+            Collider2D detectedObject = Physics2D.OverlapCircle(gameobject.transform.position, chaseRange, playerMask); 
 
             if (detectedObject != null)
             {
                 float distance = Vector3.Distance(gameobject.transform.position, player.position);
 
-                if (distance < attackRange) stateMachine.SetState(attackState); 
-                else if (distance < chaseRange) stateMachine.SetState(chaseState);
+                //if (distance < attackRange) stateMachine.SetState(attackState); 
+                if (distance < chaseRange) stateMachine.SetState(chaseState);
             }
 
-/*            inChaseRange = Physics.CheckSphere(gameobject.transform.position, chaseRange, playerMask);
+           inChaseRange = Physics.CheckSphere(gameobject.transform.position, chaseRange, playerMask);
             inAttackRange = Physics.CheckSphere(gameobject.transform.position, attackRange, playerMask);
 
             if (inChaseRange && inAttackRange) {
@@ -81,5 +95,24 @@ namespace Enemy
                 stateMachine.SetState(chaseState);
             }*/
         }
+
+        private void OnCollisionEnter2D(Collider2D collider)
+        {
+            List<Collider2D> overlappingColliders = new List<Collider2D>();
+            ContactFilter2D enemyFilter = new ContactFilter2D();
+
+            collider.OverlapCollider(enemyFilter, overlappingColliders);
+
+            foreach (Collider2D otherCollider in overlappingColliders)
+            {
+                
+                if (otherCollider.tag == "Fireball")
+                {
+                    GameHandler.instance.UnSubscribe(this);
+                    GameHandler.instance.DestroyObject(gameobject);                    
+                }
+            }
+        }
+
     }
 }
